@@ -1,0 +1,2 @@
+INSERT INTO user (username, password) VALUES ('admin', '{bcrypt}hashed_password');
+INSERT INTO user_roles (user_id, role_id) VALUES ((SELECT id FROM user WHERE username = 'admin'), (SELECT id FROM role WHERE name = 'ADMIN'));

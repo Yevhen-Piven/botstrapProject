@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Courses</title>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+  rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Courses</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Teacher</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="course : ${courses}">
+          <td th:text="${course.courseId}">ID</td>
+          <td th:text="${course.courseName}">Name</td>
+          <td th:text="${course.courseDescription}">Description</td>
+          
+          <td><a
+            th:href="@{/courses/edit/{id}(id=${course.courseId})}"
+            class="btn btn-warning">Edit</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <a href="/courses/new" class="btn btn-primary">Add Course</a>
+  </div>
+</body>
+</html>

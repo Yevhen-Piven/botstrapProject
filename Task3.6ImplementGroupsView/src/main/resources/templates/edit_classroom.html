@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit Classroom</title>
+</head>
+<body>
+  <h2>Edit Classroom</h2>
+
+  <form th:action="@{/classrooms/update/{id}(id=${classroom.id})}"
+    th:object="${classroom}" method="post">
+    <label for="classroomName">Name of class:</label> <input type="text"
+      id="classroomName" th:field="*{classroomName}"
+      placeholder="Введіть назву класу" /> <br />
+    <button type="submit">Save</button>
+  </form>
+
+  <a th:href="@{/classrooms}">Back to list</a>
+</body>
+</html>
