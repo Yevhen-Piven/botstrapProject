@@ -34,21 +34,21 @@ public class DepartmentController {
         return "departments";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/create_department")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateDepartmentForm(Model model) {
         model.addAttribute("department", new Department());
         return "department_create";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create_department")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createDepartment(@ModelAttribute("department") Department department) {
         departmentService.save(department);
         return "redirect:/departments";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit_department/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditDepartmentForm(@PathVariable("id") int id, Model model) {
         Department department = departmentService.findById(id)
@@ -57,7 +57,16 @@ public class DepartmentController {
         return "edit_department";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete_department/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    public String showDeleteDepartmentForm(@PathVariable("id") int id, Model model) {
+        Department department = departmentService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid department Id: " + id));
+        model.addAttribute("department", department);
+        return "delete_department";
+    }
+
+    @PostMapping("/delete_department/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteDepartment(@PathVariable("id") int id) {
         departmentService.deleteById(id);

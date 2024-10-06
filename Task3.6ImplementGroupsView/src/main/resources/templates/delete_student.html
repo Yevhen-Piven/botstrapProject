@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Видалити студента</title>
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h2>Видалити студента</h2>
+    <p>
+      Ви впевнені, що хочете видалити студента <strong
+        th:text="${student.name}"></strong>?
+    </p>
+
+    <form th:action="@{/students/delete/{id}(id=${student.studentId})}"
+      method="post">
+      <button type="submit" class="btn btn-danger">Видалити</button>
+      <a href="/students" class="btn btn-secondary">Скасувати</a>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

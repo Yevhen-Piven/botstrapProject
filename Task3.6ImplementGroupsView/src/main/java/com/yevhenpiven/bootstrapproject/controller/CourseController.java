@@ -34,21 +34,21 @@ public class CourseController {
         return "courses";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/create_course")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateCourseForm(Model model) {
         model.addAttribute("course", new Course());
         return "course_create";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create_course")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createCourse(@ModelAttribute("course") Course course) {
         courseService.save(course);
         return "redirect:/courses";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit_course/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditCourseForm(@PathVariable("id") int id, Model model) {
         Course course = courseService.findById(id)
@@ -57,7 +57,16 @@ public class CourseController {
         return "edit_course";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete_course/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    public String showDeleteCourseForm(@PathVariable("id") int id, Model model) {
+        Course course = courseService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid course Id: " + id));
+        model.addAttribute("course", course);
+        return "delete_course";
+    }
+
+    @PostMapping("/delete_course/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteCourse(@PathVariable("id") int id) {
         courseService.deleteById(id);

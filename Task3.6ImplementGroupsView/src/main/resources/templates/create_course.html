@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Створити курс</title>
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h2>Створити новий курс</h2>
+
+    <form th:action="@{/courses/create}" method="post">
+      <div class="form-group">
+        <label for="courseName">Назва курсу</label> <input type="text"
+          class="form-control" id="courseName" name="courseName"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="courseDescription">Опис курсу</label>
+        <textarea class="form-control" id="courseDescription"
+          name="courseDescription" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="teacherId">Викладач</label> <select
+          class="form-control" id="teacherId" name="teacherId">
+          <option value="" disabled selected>Оберіть викладача</option>
+          <th:block th:each="teacher : ${teachers}">
+            <option th:value="${teacher.teacherId}"
+              th:text="${teacher.name}"></option>
+          </th:block>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Створити
+        курс</button>
+      <a href="/courses" class="btn btn-secondary">Скасувати</a>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

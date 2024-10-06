@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Створити групу</title>
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h2>Створити нову групу</h2>
+
+    <form th:action="@{/groups/create}" method="post">
+      <div class="form-group">
+        <label for="groupName">Назва групи:</label> <input type="text"
+          id="groupName" name="groupName" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Створити</button>
+      <a href="/groups" class="btn btn-secondary">Скасувати</a>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

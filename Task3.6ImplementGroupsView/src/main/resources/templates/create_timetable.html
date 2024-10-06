@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Створити розклад</title>
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h2>Створити розклад</h2>
+    <form th:action="@{/timetables/create}" method="post">
+      <div class="form-group">
+        <label for="date">Дата:</label> <input type="date" id="date"
+          name="date" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="startTime">Час початку:</label> <input type="time"
+          id="startTime" name="startTime" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="endTime">Час закінчення:</label> <input type="time"
+          id="endTime" name="endTime" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="course">Курс:</label> <select id="course"
+          name="courseId" class="form-control" required>
+          <option th:each="course : ${courses}"
+            th:value="${course.courseId}" th:text="${course.courseName}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="classroom">Аудиторія:</label> <select id="classroom"
+          name="classroomId" class="form-control" required>
+          <option th:each="classroom : ${classrooms}"
+            th:value="${classroom.classroomId}"
+            th:text="${classroom.classroomName}"></option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Створити</button>
+      <a href="/timetables" class="btn btn-secondary">Скасувати</a>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
