@@ -38,12 +38,12 @@ public class UserController {
             model.addAttribute("user", user.get());
             return "user/edit";
         }
-        return "redirect:/users";
+        return "redirect:/users?error=UserNotFound";
     }
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute User user) {
         userService.updateUser(user);
-        return "redirect:/users";
+        return "redirect:/users?success=UserUpdated";
     }
 }

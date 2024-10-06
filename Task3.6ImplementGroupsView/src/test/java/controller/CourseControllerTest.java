@@ -38,7 +38,7 @@ class CourseControllerTest {
     private CourseService courseService;
 
     @Test
-    @WithMockUser(username = "user", roles = { "USER" })
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testListCourses() throws Exception {
         Course course1 = new Course(FIRST_TEST_COURSE_NAME, FIRST_TEST_COURSE_DESCRIPTION);
         Course course2 = new Course(SECOND_TEST_COURSE_NAME, SECOND_TEST_COURSE_DESCRIPTION);

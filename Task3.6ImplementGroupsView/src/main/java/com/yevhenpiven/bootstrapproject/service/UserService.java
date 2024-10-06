@@ -32,15 +32,25 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        return userRepository.save(user);
+        User existingUser = userRepository.findById(user.getUserId()).orElse(null);
+        if (existingUser != null) {
+            if (!existingUser.getPassword().equals(user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            return userRepository.save(user);
+        }
+        return null;
     }
 
     public void assignRoleToUser(String username, String roleName) {
         User user = userRepository.findByUsername(username);
         Role role = roleRepository.findByRoleName(roleName);
+
         if (user != null && role != null) {
             user.getRoles().add(role);
             userRepository.save(user);
+        } else {
+            throw new RuntimeException("User or Role not found");
         }
     }
 

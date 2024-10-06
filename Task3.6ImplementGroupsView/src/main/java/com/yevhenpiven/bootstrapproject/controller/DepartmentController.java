@@ -1,5 +1,7 @@
 package com.yevhenpiven.bootstrapproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,21 @@ public class DepartmentController {
 
     @GetMapping
     public String listDepartments(Model model) {
-        model.addAttribute("departments", departmentService.findAll());
+        List<Department> departments = departmentService.findAll();
+        model.addAttribute("departments", departments);
         return "departments";
+    }
+
+    @GetMapping("/create")
+    public String showCreateDepartmentForm(Model model) {
+        model.addAttribute("department", new Department());
+        return "department_create";
+    }
+
+    @PostMapping("/create")
+    public String createDepartment(@ModelAttribute("department") Department department) {
+        departmentService.save(department);
+        return "redirect:/departments";
     }
 
     @GetMapping("/edit/{id}")
@@ -34,12 +49,12 @@ public class DepartmentController {
         Department department = departmentService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid department Id: " + id));
         model.addAttribute("department", department);
-        return "department_edit";
+        return "edit_department";
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateDepartment(@PathVariable("id") Long id, @ModelAttribute("department") Department department) {
-        departmentService.save(department);
-        return "redirect:/department";
+    @PostMapping("/delete/{id}")
+    public String deleteDepartment(@PathVariable("id") int id) {
+        departmentService.deleteById(id);
+        return "redirect:/departments";
     }
 }

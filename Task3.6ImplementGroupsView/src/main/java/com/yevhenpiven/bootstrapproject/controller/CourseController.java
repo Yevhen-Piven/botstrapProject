@@ -1,5 +1,7 @@
 package com.yevhenpiven.bootstrapproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,21 @@ public class CourseController {
 
     @GetMapping
     public String listCourses(Model model) {
-        model.addAttribute("courses", courseService.findAll());
+        List<Course> courses = courseService.findAll();
+        model.addAttribute("courses", courses);
         return "courses";
+    }
+
+    @GetMapping("/create")
+    public String showCreateCourseForm(Model model) {
+        model.addAttribute("course", new Course());
+        return "course_create";
+    }
+
+    @PostMapping("/create")
+    public String createCourse(@ModelAttribute("course") Course course) {
+        courseService.save(course);
+        return "redirect:/courses";
     }
 
     @GetMapping("/edit/{id}")
@@ -34,13 +49,12 @@ public class CourseController {
         Course course = courseService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid course Id: " + id));
         model.addAttribute("course", course);
-        return "course_edit";
+        return "edit_course";
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateCourse(@PathVariable("id") int id, @ModelAttribute("course") Course course) {
-        course.setCourseId(id); 
-        courseService.save(course);
+    @PostMapping("/delete/{id}")
+    public String deleteCourse(@PathVariable("id") int id) {
+        courseService.deleteById(id);
         return "redirect:/courses";
     }
 }

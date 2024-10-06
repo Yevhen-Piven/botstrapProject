@@ -1,5 +1,7 @@
 package com.yevhenpiven.bootstrapproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,21 @@ public class GroupController {
 
     @GetMapping
     public String listGroups(Model model) {
-        model.addAttribute("groups", groupService.findAll());
+        List<Group> groups = groupService.findAll();
+        model.addAttribute("groups", groups);
         return "groups";
+    }
+
+    @GetMapping("/create")
+    public String showCreateGroupForm(Model model) {
+        model.addAttribute("group", new Group());
+        return "group_create";
+    }
+
+    @PostMapping("/create")
+    public String createGroup(@ModelAttribute("group") Group group) {
+        groupService.save(group);
+        return "redirect:/groups";
     }
 
     @GetMapping("/edit/{id}")
@@ -34,12 +49,12 @@ public class GroupController {
         Group group = groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + id));
         model.addAttribute("group", group);
-        return "group_edit";
+        return "edit_group";
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateGroup(@PathVariable("id") Long id, @ModelAttribute("group") Group group) {
-        groupService.save(group);
-        return "redirect:/group";
+    @PostMapping("/delete/{id}")
+    public String deleteGroup(@PathVariable("id") int id) {
+        groupService.deleteById(id);
+        return "redirect:/groups";
     }
 }

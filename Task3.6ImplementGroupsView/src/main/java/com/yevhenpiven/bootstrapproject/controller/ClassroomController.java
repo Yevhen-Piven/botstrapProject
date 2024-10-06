@@ -1,5 +1,7 @@
 package com.yevhenpiven.bootstrapproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,23 +27,34 @@ public class ClassroomController {
 
     @GetMapping
     public String listClassrooms(Model model) {
-        model.addAttribute("classrooms", classroomService.findAll());
+        List<Classroom> classrooms = classroomService.findAll();
+        model.addAttribute("classrooms", classrooms);
         return "classrooms";
+    }
+
+    @GetMapping("/create")
+    public String showCreateClassroomForm(Model model) {
+        model.addAttribute("classroom", new Classroom());
+        return "classroom_create";
+    }
+
+    @PostMapping("/create")
+    public String createClassroom(@ModelAttribute("classroom") Classroom classroom) {
+        classroomService.save(classroom);
+        return "redirect:/classrooms";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditClassroomForm(@PathVariable("id") int id, Model model) {
         Classroom classroom = classroomService.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid classroom Id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid classroom Id: " + id));
         model.addAttribute("classroom", classroom);
         return "edit_classroom";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateClassroom(@PathVariable("id") int id, @ModelAttribute("classroom") Classroom classroom,
-            Model model) {
-        classroom.setClassroomId(id);
-        classroomService.save(classroom);
+    @PostMapping("/delete/{id}")
+    public String deleteClassroom(@PathVariable("id") int id) {
+        classroomService.deleteById(id);
         return "redirect:/classrooms";
     }
 }

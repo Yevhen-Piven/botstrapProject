@@ -42,7 +42,7 @@ class StudentControllerTest {
     private StudentService studentService;
 
     @Test
-    @WithMockUser(username = "user", roles = { "USER" })
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testListStudents() throws Exception {
         Student student1 = new Student(FIRST_TEST_GROUP_ID, FIRST_TEST_STUDENT_NAME, FIRST_TEST_STUDENT_SURNAME);
         Student student2 = new Student(SECOND_TEST_GROUP_ID, SECOND_TEST_STUDENT_NAME, SECOND_TEST_STUDENT_SURNAME);

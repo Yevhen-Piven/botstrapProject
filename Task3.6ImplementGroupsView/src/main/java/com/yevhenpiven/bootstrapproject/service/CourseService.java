@@ -14,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CourseService {
+    
     private final CourseRepository courseRepository;
 
+    
     public List<Course> findAll() {
         return courseRepository.findAll();
     }

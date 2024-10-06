@@ -1,5 +1,7 @@
 package com.yevhenpiven.bootstrapproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,21 @@ public class TeacherController {
 
     @GetMapping
     public String listTeachers(Model model) {
-        model.addAttribute("teachers", teacherService.findAll());
+        List<Teacher> teachers = teacherService.findAll();
+        model.addAttribute("teachers", teachers);
         return "teachers";
+    }
+
+    @GetMapping("/create")
+    public String showCreateTeacherForm(Model model) {
+        model.addAttribute("teacher", new Teacher());
+        return "teacher_create";
+    }
+
+    @PostMapping("/create")
+    public String createTeacher(@ModelAttribute("teacher") Teacher teacher) {
+        teacherService.save(teacher);
+        return "redirect:/teachers";
     }
 
     @GetMapping("/edit/{id}")
@@ -34,13 +49,12 @@ public class TeacherController {
         Teacher teacher = teacherService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid teacher Id: " + id));
         model.addAttribute("teacher", teacher);
-        return "teacher_edit"; 
+        return "edit_teacher";
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateTeacher(@PathVariable("id") int id, @ModelAttribute("teacher") Teacher teacher) {
-        teacher.setTeacherId(id); 
-        teacherService.save(teacher);
+    @PostMapping("/delete/{id}")
+    public String deleteTeacher(@PathVariable("id") int id) {
+        teacherService.deleteById(id);
         return "redirect:/teachers";
     }
 }

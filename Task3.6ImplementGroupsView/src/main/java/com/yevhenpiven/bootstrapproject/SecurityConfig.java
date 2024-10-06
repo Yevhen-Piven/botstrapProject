@@ -16,21 +16,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/login").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/student/**").hasRole("STUDENT")
-                .requestMatchers("/teacher/**").hasRole("TEACHER")
-                .requestMatchers("/staff/**").hasRole("STAFF")
-                .anyRequest().authenticated())
-            .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .permitAll())
-            .logout(logout -> logout
-                .permitAll())
-            .csrf(csrf -> csrf.disable()); 
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/", "/login").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/student/**")
+                .hasAnyRole("STUDENT", "ADMIN").requestMatchers("/teacher/**").hasAnyRole("TEACHER", "ADMIN")
+                .requestMatchers("/staff/**").hasAnyRole("STAFF", "ADMIN").requestMatchers("/courses/**")
+                .hasAnyRole("ADMIN", "STAFF", "STUDENT", "TEACHER").requestMatchers("/groups/**")
+                .hasAnyRole("ADMIN", "STAFF", "STUDENT", "TEACHER").requestMatchers("/classrooms/**")
+                .hasAnyRole("ADMIN", "STAFF", "STUDENT", "TEACHER").requestMatchers("/departments/**")
+                .hasAnyRole("ADMIN", "STAFF", "STUDENT", "TEACHER").requestMatchers("/timetables/**")
+                .hasAnyRole("ADMIN", "STAFF", "STUDENT", "TEACHER").anyRequest().authenticated())
+                .formLogin(formLogin -> formLogin.loginPage("/login").permitAll()).logout(logout -> logout.permitAll())
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -55,10 +58,5 @@ public class SecurityConfig {
         userDetailsService.createUser(staff);
 
         return userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

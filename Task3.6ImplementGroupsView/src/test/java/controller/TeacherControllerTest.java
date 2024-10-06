@@ -41,7 +41,7 @@ class TeacherControllerTest {
     private TeacherService teacherService;
 
     @Test
-    @WithMockUser(username = "user", roles = { "USER" })
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testGetAllTeachers() throws Exception {
         Teacher teacher1 = new Teacher(FIRST_TEST_TEACHER_SURNAME, FIRST_TEST_TEACHER_NAME, FIRST_TEST_DEPARTMENT_ID);
         Teacher teacher2 = new Teacher(SECOND_TEST_TEACHER_SURNAME, SECOND_TEST_TEACHER_NAME,

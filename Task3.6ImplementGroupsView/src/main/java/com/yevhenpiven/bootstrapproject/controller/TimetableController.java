@@ -1,5 +1,7 @@
 package com.yevhenpiven.bootstrapproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,21 @@ public class TimetableController {
 
     @GetMapping
     public String listTimetables(Model model) {
-        model.addAttribute("timetables", timetableService.findAll());
+        List<Timetable> timetables = timetableService.findAll();
+        model.addAttribute("timetables", timetables);
         return "timetables";
+    }
+
+    @GetMapping("/create")
+    public String showCreateTimetableForm(Model model) {
+        model.addAttribute("timetable", new Timetable());
+        return "timetable_create";
+    }
+
+    @PostMapping("/create")
+    public String createTimetable(@ModelAttribute("timetable") Timetable timetable) {
+        timetableService.save(timetable);
+        return "redirect:/timetables";
     }
 
     @GetMapping("/edit/{id}")
@@ -34,12 +49,12 @@ public class TimetableController {
         Timetable timetable = timetableService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid timetable Id: " + id));
         model.addAttribute("timetable", timetable);
-        return "timetable_edit";
+        return "edit_timetable";
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateTimetable(@PathVariable("id") int id, @ModelAttribute("teacher") Timetable timetable) {
-        timetableService.save(timetable);
-        return "redirect:/teacher";
+    @PostMapping("/delete/{id}")
+    public String deleteTimetable(@PathVariable("id") int id) {
+        timetableService.deleteById(id);
+        return "redirect:/timetables";
     }
 }

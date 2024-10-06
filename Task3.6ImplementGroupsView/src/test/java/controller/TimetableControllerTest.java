@@ -43,7 +43,7 @@ class TimetableControllerTest {
     private TimetableService timetableService;
 
     @Test
-    @WithMockUser(username = "user", roles = { "USER" })
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testListTimetables() throws Exception {
         Timetable timetable1 = new Timetable(FIRST_TEST_DATE, FIRST_TEST_START_TIME, FIRST_TEST_END_TIME);
         Timetable timetable2 = new Timetable(SECOND_TEST_DATE, SECOND_TEST_START_TIME, SECOND_TEST_END_TIME);
