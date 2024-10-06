@@ -3,6 +3,7 @@ package com.yevhenpiven.bootstrapproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class GroupController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'STAFF', 'ADMIN')")
     public String listGroups(Model model) {
         List<Group> groups = groupService.findAll();
         model.addAttribute("groups", groups);
@@ -33,18 +35,21 @@ public class GroupController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateGroupForm(Model model) {
         model.addAttribute("group", new Group());
         return "group_create";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createGroup(@ModelAttribute("group") Group group) {
         groupService.save(group);
         return "redirect:/groups";
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditGroupForm(@PathVariable("id") int id, Model model) {
         Group group = groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + id));
@@ -53,6 +58,7 @@ public class GroupController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteGroup(@PathVariable("id") int id) {
         groupService.deleteById(id);
         return "redirect:/groups";

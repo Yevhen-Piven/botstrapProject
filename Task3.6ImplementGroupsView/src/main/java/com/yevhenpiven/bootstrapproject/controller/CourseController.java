@@ -3,6 +3,7 @@ package com.yevhenpiven.bootstrapproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class CourseController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'STAFF', 'ADMIN')")
     public String listCourses(Model model) {
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
@@ -33,18 +35,21 @@ public class CourseController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateCourseForm(Model model) {
         model.addAttribute("course", new Course());
         return "course_create";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createCourse(@ModelAttribute("course") Course course) {
         courseService.save(course);
         return "redirect:/courses";
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditCourseForm(@PathVariable("id") int id, Model model) {
         Course course = courseService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid course Id: " + id));
@@ -53,6 +58,7 @@ public class CourseController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteCourse(@PathVariable("id") int id) {
         courseService.deleteById(id);
         return "redirect:/courses";

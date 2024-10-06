@@ -3,6 +3,7 @@ package com.yevhenpiven.bootstrapproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class TimetableController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'STAFF', 'ADMIN')")
     public String listTimetables(Model model) {
         List<Timetable> timetables = timetableService.findAll();
         model.addAttribute("timetables", timetables);
@@ -33,18 +35,21 @@ public class TimetableController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateTimetableForm(Model model) {
         model.addAttribute("timetable", new Timetable());
         return "timetable_create";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createTimetable(@ModelAttribute("timetable") Timetable timetable) {
         timetableService.save(timetable);
         return "redirect:/timetables";
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditTimetableForm(@PathVariable("id") int id, Model model) {
         Timetable timetable = timetableService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid timetable Id: " + id));
@@ -53,6 +58,7 @@ public class TimetableController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteTimetable(@PathVariable("id") int id) {
         timetableService.deleteById(id);
         return "redirect:/timetables";

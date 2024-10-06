@@ -3,6 +3,7 @@ package com.yevhenpiven.bootstrapproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class ClassroomController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'STAFF', 'ADMIN')")
     public String listClassrooms(Model model) {
         List<Classroom> classrooms = classroomService.findAll();
         model.addAttribute("classrooms", classrooms);
@@ -33,18 +35,21 @@ public class ClassroomController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateClassroomForm(Model model) {
         model.addAttribute("classroom", new Classroom());
         return "classroom_create";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createClassroom(@ModelAttribute("classroom") Classroom classroom) {
         classroomService.save(classroom);
         return "redirect:/classrooms";
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditClassroomForm(@PathVariable("id") int id, Model model) {
         Classroom classroom = classroomService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid classroom Id: " + id));
@@ -53,6 +58,7 @@ public class ClassroomController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteClassroom(@PathVariable("id") int id) {
         classroomService.deleteById(id);
         return "redirect:/classrooms";
