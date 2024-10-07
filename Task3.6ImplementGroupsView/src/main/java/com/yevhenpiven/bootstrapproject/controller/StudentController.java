@@ -34,39 +34,39 @@ public class StudentController {
         return "students";
     }
 
-    @GetMapping("/create_student")
+    @GetMapping("/create-student")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateStudentForm(Model model) {
         model.addAttribute("student", new Student());
-        return "student_create";
+        return "student-create";
     }
 
-    @PostMapping("/create_student")
+    @PostMapping("/create-student")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createStudent(@ModelAttribute("student") Student student) {
         studentService.save(student);
         return "redirect:/students";
     }
 
-    @GetMapping("/edit_student/{id}")
+    @GetMapping("/edit-student/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditStudentForm(@PathVariable("id") int id, Model model) {
         Student student = studentService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id: " + id));
         model.addAttribute("student", student);
-        return "edit_student";
+        return "edit-student";
     }
 
-    @GetMapping("/delete_student/{id}")
+    @GetMapping("/delete-student/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showDeleteStudentForm(@PathVariable("id") int id, Model model) {
         Student student = studentService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id: " + id));
         model.addAttribute("student", student);
-        return "delete_student";
+        return "delete-student";
     }
 
-    @PostMapping("/delete_student/{id}")
+    @PostMapping("/delete-student/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteStudent(@PathVariable("id") int id) {
         studentService.deleteById(id);

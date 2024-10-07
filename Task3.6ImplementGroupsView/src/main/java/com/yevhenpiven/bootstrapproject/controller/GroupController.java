@@ -34,39 +34,39 @@ public class GroupController {
         return "groups";
     }
 
-    @GetMapping("/create_group")
+    @GetMapping("/create-group")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateGroupForm(Model model) {
         model.addAttribute("group", new Group());
-        return "group_create";
+        return "group-create";
     }
 
-    @PostMapping("/create_group")
+    @PostMapping("/create-group")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createGroup(@ModelAttribute("group") Group group) {
         groupService.save(group);
         return "redirect:/groups";
     }
 
-    @GetMapping("/edit_group/{id}")
+    @GetMapping("/edit-group/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditGroupForm(@PathVariable("id") int id, Model model) {
         Group group = groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + id));
         model.addAttribute("group", group);
-        return "edit_group";
+        return "edit-group";
     }
 
-    @GetMapping("/delete_group/{id}")
+    @GetMapping("/delete-group/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showDeleteGroupForm(@PathVariable("id") int id, Model model) {
         Group group = groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + id));
         model.addAttribute("group", group);
-        return "delete_group";
+        return "delete-group";
     }
 
-    @PostMapping("/delete_group/{id}")
+    @PostMapping("/delete-group/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteGroup(@PathVariable("id") int id) {
         groupService.deleteById(id);

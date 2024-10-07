@@ -34,38 +34,38 @@ public class TimetableController {
         return "timetables";
     }
 
-    @GetMapping("/create_timetable")
+    @GetMapping("/create-timetable")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateTimetableForm(Model model) {
         model.addAttribute("timetable", new Timetable());
-        return "timetable_create";
+        return "timetable-create";
     }
 
-    @PostMapping("/create_timetable")
+    @PostMapping("/create-timetable")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createTimetable(@ModelAttribute("timetable") Timetable timetable) {
         timetableService.save(timetable);
         return "redirect:/timetables";
     }
 
-    @GetMapping("/edit_timetable/{id}")
+    @GetMapping("/edit-timetable/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditTimetableForm(@PathVariable("id") int id, Model model) {
         Timetable timetable = timetableService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid timetable Id: " + id));
         model.addAttribute("timetable", timetable);
-        return "edit_timetable";
+        return "edit-timetable";
     }
 
-    @GetMapping("/delete_timetable/{id}")
+    @GetMapping("/delete-timetable/{id}")
     public String showDeleteTimetableForm(@PathVariable int id, Model model) {
         Timetable timetable = timetableService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid timetable Id: " + id));
         model.addAttribute("timetable", timetable);
-        return "delete_timetable";
+        return "delete-timetable";
     }
 
-    @PostMapping("/delete_timetable/{id}")
+    @PostMapping("/delete-timetable/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteTimetable(@PathVariable("id") int id) {
         timetableService.deleteById(id);

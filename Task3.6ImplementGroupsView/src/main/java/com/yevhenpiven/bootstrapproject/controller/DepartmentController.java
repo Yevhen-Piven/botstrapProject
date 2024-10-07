@@ -34,39 +34,39 @@ public class DepartmentController {
         return "departments";
     }
 
-    @GetMapping("/create_department")
+    @GetMapping("/create-department")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showCreateDepartmentForm(Model model) {
         model.addAttribute("department", new Department());
-        return "department_create";
+        return "department-create";
     }
 
-    @PostMapping("/create_department")
+    @PostMapping("/create-department")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String createDepartment(@ModelAttribute("department") Department department) {
         departmentService.save(department);
         return "redirect:/departments";
     }
 
-    @GetMapping("/edit_department/{id}")
+    @GetMapping("/edit-department/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showEditDepartmentForm(@PathVariable("id") int id, Model model) {
         Department department = departmentService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid department Id: " + id));
         model.addAttribute("department", department);
-        return "edit_department";
+        return "edit-department";
     }
 
-    @GetMapping("/delete_department/{id}")
+    @GetMapping("/delete-department/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String showDeleteDepartmentForm(@PathVariable("id") int id, Model model) {
         Department department = departmentService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid department Id: " + id));
         model.addAttribute("department", department);
-        return "delete_department";
+        return "delete-department";
     }
 
-    @PostMapping("/delete_department/{id}")
+    @PostMapping("/delete-department/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public String deleteDepartment(@PathVariable("id") int id) {
         departmentService.deleteById(id);
